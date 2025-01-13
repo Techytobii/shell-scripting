@@ -18,7 +18,6 @@ Script Breakdown
 1. Variables Section
 bash
 
-# Copy code
 GROUP_NAME="developers"
 USERS=("Dave" "Carey" "Tobi")
 GROUP_NAME: Specifies the IAM group to which the users will be added. In this case, it's set to "developers".
@@ -27,7 +26,6 @@ USERS: An array of IAM users ("Dave", "Carey", and "Tobi") to be created and add
 2. Group Existence Check and Creation
 bash
 
-# Copy code
 aws iam get-group --group-name "$GROUP_NAME" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
    echo "Creating group: $GROUP_NAME"
@@ -42,7 +40,6 @@ If the group already exists, a message is displayed confirming its existence.
 3. User Creation and Group Association
 bash
 
-# Copy code
 for USER in "${USERS[@]}"; do
    aws iam get-user --user-name "$USER" >/dev/null 2>&1
    if [ $? -ne 0 ]; then
@@ -65,7 +62,6 @@ After ensuring the user exists, the script adds the user to the specified IAM gr
 4. Policy Attachment to the Group
 bash
 
-# Copy code
 echo "Attaching AdministratorAccess policy to group $GROUP_NAME"
 aws iam attach-group-policy --group-name "$GROUP_NAME" --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 This step attaches the AdministratorAccess AWS-managed policy to the IAM group. The policy ARN (arn:aws:iam::aws:policy/AdministratorAccess) grants full administrative privileges to all users in the group.
@@ -74,7 +70,6 @@ The aws iam attach-group-policy command is used to attach the policy to the grou
 5. Completion Message
 bash
 
-# Copy code
 echo "Script execution completed."
 Once the group and users are created, and the policy is attached, this message is displayed to indicate the script has finished executing.
 
@@ -85,8 +80,6 @@ The exit status ($?) is checked immediately after each AWS CLI command to decide
 
 Example Output
 bash
-
-# Copy code
 
 Creating group: developers
 Creating user: Dave
